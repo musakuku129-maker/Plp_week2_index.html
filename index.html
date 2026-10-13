@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Budget Tracker - Week 2</title>
+    <!-- Linking the external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Section with Logo Image -->
+    <header id="main-header">
+        <div class="header-content">
+            <img src="https://via.placeholder.com/60" alt="Budget Tracker Logo" width="60" class="logo-img">
+            <h1>My Budget Tracker</h1>
+        </div>
+        <p>Track your income and expenses in one place.</p>
+    </header>
+
+    <main>
+        <!-- Interactive Element: Collapsible instructions using details/summary -->
+        <details class="card" id="instructions-section">
+            <summary><strong>How to use this tracker</strong></summary>
+            <p>Use the form below to log your expenses by entering the name, amount, date, and selecting the appropriate category. New entries will appear in the expense table below.</p>
+        </details>
+
+        <!-- Part 2: Upgraded Add Expense Form -->
+        <section class="card" id="add-expense-section">
+            <h2>Add Expense</h2>
+            <form id="expense-form">
+                <div class="input-group">
+                    <label for="expense-name">Expense Name:</label>
+                    <input type="text" id="expense-name" placeholder="e.g., Groceries, Rent" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="expense-amount">Amount ($):</label>
+                    <input type="number" id="expense-amount" placeholder="e.g., 50.00" min="0.01" step="0.01" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="expense-category">Category:</label>
+                    <select id="expense-category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="food">Food</option>
+                        <option value="transport">Transport</option>
+                        <option value="rent">Rent</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="expense-date">Date:</label>
+                    <input type="date" id="expense-date" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Add Expense</button>
+            </form>
+            <p id="expense-status" role="status" aria-live="polite"></p>
+        </section>
+
+        <!-- Part 1: Your Expenses Table -->
+        <section class="card" id="expenses-list-section">
+            <h2>Your Expenses</h2>
+            <div class="table-container">
+                <table class="expense-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-table-body">
+                        <tr>
+                            <td>Grocery Store</td>
+                            <td>$64.50</td>
+                            <td>Food</td>
+                            <td>2026-10-01</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Rent</td>
+                            <td>$1,200.00</td>
+                            <td>Rent</td>
+                            <td>2026-10-02</td>
+                        </tr>
+                        <tr>
+                            <td>Subway Pass</td>
+                            <td>$45.00</td>
+                            <td>Transport</td>
+                            <td>2026-10-05</td>
+                        </tr>
+                        <tr>
+                            <td>Movie Ticket</td>
+                            <td>$15.00</td>
+                            <td>Entertainment</td>
+                            <td>2026-10-08</td>
+                        </tr>
+                        <tr>
+                            <td>Coffee & Pastry</td>
+                            <td>$7.25</td>
+                            <td>Food</td>
+                            <td>2026-10-10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Part 3: Multimedia Content (YouTube Embed) -->
+        <section class="card" id="multimedia-section">
+            <h2>Budgeting Tips & Guidance</h2>
+            <p>Watch this short video for helpful advice on managing your personal finances effectively.</p>
+            <div class="video-container">
+                <iframe
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="Personal Budgeting Tips"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const expenseForm = document.querySelector("#expense-form");
+        const expenseTableBody = document.querySelector("#expense-table-body");
+        const expenseStatus = document.querySelector("#expense-status");
+
+        expenseForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const name = document.querySelector("#expense-name").value.trim();
+            const amount = Number(document.querySelector("#expense-amount").value);
+            const categorySelect = document.querySelector("#expense-category");
+            const category = categorySelect.options[categorySelect.selectedIndex].text;
+            const date = document.querySelector("#expense-date").value;
+
+            if (!name || !Number.isFinite(amount) || amount <= 0 || !date || !categorySelect.value) {
+                expenseStatus.textContent = "Please enter valid details for every field.";
+                return;
+            }
+
+            const row = expenseTableBody.insertRow();
+            [name, `$${amount.toFixed(2)}`, category, date].forEach((value) => {
+                row.insertCell().textContent = value;
+            });
+
+            expenseStatus.textContent = `${name} was added to your expenses.`;
+            expenseForm.reset();
+            document.querySelector("#expense-name").focus();
+        });
+    </script>
+</body>
+</html>
